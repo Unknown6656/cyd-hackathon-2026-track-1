@@ -3,6 +3,8 @@
 Target: `https://llmhack-team-1.hackathon.intlab.ch/` — Track 1 documentation assistant.
 Probe log: `probes/` (a_injection, b_gates, c_classified, e_model_selection). All session ids below are reproducible via `POST /chat` with the same JSON (model_name as noted).
 
+> **Team status:** red-team contributor **bouncypurple died during operations** and will no longer contribute (reported 2026-09-16). His folder held no work; his planned attack lines were absorbed by unknown6656. Other contributors (timoll, valardomate) may add their own findings later — keep sections attributable.
+
 ## Infrastructure finding (enabler)
 
 **`GET /models` + `model_name` field on `/chat` expose a 3-model menu** to any client:
