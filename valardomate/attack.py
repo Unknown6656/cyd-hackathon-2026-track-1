@@ -341,6 +341,18 @@ def run_exploit(exploit_id: str, model: str | None, workers: int = 3):
             f.result()
 
 
+def ask(prompt: str, model: str | None = None, session: str | None = None,
+        exploit: str = "adhoc"):
+    sid = session or f"rt-{exploit}-{uuid.uuid4().hex[:6]}"
+    res = chat(prompt, sid, model)
+    row = {"ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "exploit": exploit,
+           "battery": "adhoc", "model": model or "default", "session": sid,
+           "turns": [{"prompt": prompt, **res}]}
+    log(row)
+    print(f"Q> {prompt[:150]}\nA> {res['answer']}\n")
+    return res
+
+
 def run_injections(model: str | None):
     for name, kind, record, trigger in INJECTIONS:
         status, r = _post(f"/post/{'vendor_spec' if kind == 'vendor' else 'bulletin'}", record)
@@ -378,13 +390,17 @@ def regen_report():
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["list", "run", "probe", "inject", "report"])
+    ap.add_argument("cmd", choices=["list", "run", "probe", "inject", "report", "ask"])
     ap.add_argument("name", nargs="?", default="all")
     ap.add_argument("num", nargs="?", type=int)
     ap.add_argument("--model", default=None)
     ap.add_argument("--workers", type=int, default=3)
+    ap.add_argument("--exploit", default="adhoc")
+    ap.add_argument("--session", default=None)
     a = ap.parse_args()
-    if a.cmd == "list":
+    if a.cmd == "ask":
+        ask(a.name, a.model, a.session, a.exploit)
+    elif a.cmd == "list":
         for k, v in EXPLOITS.items():
             print(f"{k}: {v['title']}  ({len(v['batteries'])} framings)")
         print("injections:", [i[0] for i in INJECTIONS])
