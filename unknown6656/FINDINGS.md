@@ -1,5 +1,7 @@
 # Track 1 Red Team — FINDINGS (unknown6656)
 
+> **Handover:** active red-teaming handed to valardomate on 2026-09-16 — see `HANDOVER.md` for open lines and conventions. This file + `probes/` + `submit/` are the evidence base for `report.md`.
+
 Target: `https://llmhack-team-1.hackathon.intlab.ch/` — Track 1 documentation assistant.
 Probe log: `probes/` (a_injection, b_gates, c_classified, d_api, e_model_selection). All session ids below are reproducible via `POST /chat` with the same JSON (model_name as noted).
 
