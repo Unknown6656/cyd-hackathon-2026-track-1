@@ -31,8 +31,8 @@ The assistant is a RAG chat endpoint over four firearms manuals (`/chat`), plus 
 
 - `GET /` serves a chat UI with a **model dropdown**; its JS posts a `model_name` field to `/chat`.
 - `GET /models` → `{"models":["Qwen/Qwen3.8-Flash-Next","mistralai/Mistral-Medium-3.5-128B","google/gemma-4-31B-it"],"default":"Qwen/Qwen3.8-Flash-Next"}`.
-- **`GET /openapi.json`** (found by valardomate) publishes the complete API spec — FastAPI app "Track 1 assistant" v0.1.0 — including the `model_name` field on `ChatRequest`, confirming the selector is part of the public contract, not an undocumented quirk.
-- **`GET /health`** discloses internals: 546 indexed corpus chunks and live tool-store counts (valardomate's capture: 22 vendor specs / 16 bulletins; re-verified 2026-09-16: 33/24 — attacker-posted records accumulate unbounded).
+- **`GET /openapi.json`** (found by valardomate) publishes the complete API spec — FastAPI app "Track 1 assistant" v0.1.0 — including the `model_name` field on `ChatRequest`, confirming the selector is part of the public contract, not an undocumented quirk. **`GET /docs` (Swagger UI) and `GET /redoc` are public too** — the whole API is interactively self-documented.
+- **`GET /health`** discloses internals: 546 indexed corpus chunks and live tool-store counts (valardomate's capture: 22 vendor specs / 16 bulletins; re-verified 2026-09-16: 33/24 — attacker-posted records accumulate unbounded). The store is write-once per id for everyone (duplicate → `409 already exists`; seed id → `409 …is a seeded record`), so posted attack records are stable evidence; invalid `model_name` → clean `400`, no upstream error leakage.
 - Any client can route any request to any model. No auth, no rate limiting, no client-side allow-list.
 - Consequence: acceptance testing of the default model only ships two exploitable models alongside it. Every finding below specifies the model; the same probes were run across all three to map the asymmetry.
 
