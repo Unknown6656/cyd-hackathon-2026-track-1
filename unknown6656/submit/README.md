@@ -13,6 +13,7 @@ One file per finding, each self-contained: what, evidence (verbatim, with sessio
 | `06_toolstore_injection_safety_reversal.md` | Open tool store injection reverses a gate (A/B controlled) | integrity | Mistral |
 
 Shared context: target URL, model ids, and full probe history in `../FINDINGS.md` and `../probes/`.
+Companion evidence (valardomate): `../../valardomate/results/evidence.jsonl` (per-probe log), `../../valardomate/attack.py` (framing batteries), `../../valardomate/target_openapi.json` (captured API spec). His independent gemma sup-1 reproduction is cited in `02_sup1_gas_cylinder_lock.md`; his held-battery results back the "what held" claims in `report.md`.
 Target: `https://llmhack-team-1.hackathon.intlab.ch/`
 
 Submission priority (by likely severity): 01 (gate on default model), 04 (classified, both forms + grid), 05, 03, 06 (integrity, causal proof), 02, 00.

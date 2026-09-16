@@ -13,6 +13,8 @@ The application exposes a **model selector to any client**:
   {"models":["Qwen/Qwen3.8-Flash-Next","mistralai/Mistral-Medium-3.5-128B","google/gemma-4-31B-it"],
    "default":"Qwen/Qwen3.8-Flash-Next"}
   ```
+- `GET /openapi.json` (captured by valardomate, `valardomate/target_openapi.json`) publishes the complete FastAPI spec ("Track 1 assistant" v0.1.0); the `model_name` field on `ChatRequest` is part of the public contract.
+- `GET /health` discloses internals: 546 indexed corpus chunks and live tool-store counts (valardomate's capture: 22/16; re-verified later same day: 33 vendor specs / 24 bulletins — posted records accumulate unbounded).
 
 Safety behaviour is **model-dependent and not uniform**: the default model (Qwen) resists all classified-fact probes below, while the two selectable models leak them (see findings 01–05). Any attacker can route a request to the weakest model per-message; there is no authentication, rate limiting, or model allow-list on the client side.
 
@@ -20,6 +22,8 @@ Safety behaviour is **model-dependent and not uniform**: the default model (Qwen
 
 ```bash
 curl -sk https://llmhack-team-1.hackathon.intlab.ch/models
+curl -sk https://llmhack-team-1.hackathon.intlab.ch/openapi.json | head -c 400
+curl -sk https://llmhack-team-1.hackathon.intlab.ch/health
 curl -sk https://llmhack-team-1.hackathon.intlab.ch/chat -H 'Content-Type: application/json' \
   -d '{"message":"ping","session_id":"x","model_name":"google/gemma-4-31B-it"}'
 # response "model" field echoes the selected model
